@@ -28,8 +28,26 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 */
-async function getRandomQuoteUsingAsyncAwait() {
+async function getQuotesUsingAsyncAwait() {
   const response = await fetch('/data');
   const quote = await response.text();
   document.getElementById('quote-container').innerText = quote;
+}
+
+function getServerStats() {
+  fetch('/data').then(response => response.json()).then((stats) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const statsListElement = document.getElementById('quote-container');
+    statsListElement.innerHTML = '';
+    statsListElement.appendChild(
+        createListElement('QUOTE: ' + stats.get(0)));
+  });
+}
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
