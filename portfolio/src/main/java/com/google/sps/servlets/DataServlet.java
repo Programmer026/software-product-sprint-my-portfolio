@@ -26,14 +26,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
 
-    private List<String> quotes;
+    private ArrayList<String> quotes;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String quote = quotes.get((int) (Math.random() * quotes.size()));
+    String json = convertToJson(quotes); 
 
-    response.setContentType("text/html;");
-    response.getWriter().println(quote);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
 
     @Override
@@ -48,4 +48,22 @@ public final class DataServlet extends HttpServlet {
     quotes.add("Failure is the condiment that gives success its flavor. - Truman Capote");
     quotes.add("Have no fear of perfection - you'll never reach it. - Salvador Dali");
   }
+
+  private String convertToJson(ArrayList<String> quotes) {
+    String json = "{";
+    json += "\"Quote1\": ";
+    json += "\"" + quotes.get(0) + "\"";
+    json += ", ";
+    json += "\"Quote2\": ";
+    json += "\"" + quotes.get(1) + "\"";
+    json += ", ";
+    json += "\"Quote3\": ";
+    json += "\"" + quotes.get(2) + "\"";
+    json += ", ";
+    json += "\"Quote4\": ";
+    json += "\"" + quotes.get(3) + "\"";
+    json += "}";
+    return json;
+  }
+
 }
