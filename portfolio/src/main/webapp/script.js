@@ -17,9 +17,9 @@ function getData() {
   fetch('/data').then(response => response.json()).then((quote) => {
     len = quote.length;
   text = "<ul>";
-  for (i = 0; i < len; i++){
+  for (i = 0; i < len; i=i+2){
       if(quote[i] === "") {continue;}
-      text += "<li>" + quote[i] + "</li>";
+      text += quote[i] + " -:<br>" + quote[i+1] + "<br>" ;
   }
   text += "</ul>";
   document.getElementById('quote-container').innerHTML = text;
