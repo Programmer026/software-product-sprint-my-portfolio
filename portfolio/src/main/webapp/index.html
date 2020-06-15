@@ -3,30 +3,35 @@
     <style>
     
     body {
-        background-repeat: no-repeat;
-        background-attachment: fixed; 
-        background-size: cover;
-        color: black;
+      background-repeat: no-repeat;
+      background-attachment: fixed; 
+      background-size: cover;
+      color: black;
         }
+
     h3 {
-        font-family:verdana; 
-        text-align:center; 
-        color:white;
-        text-shadow: 3px 3px grey;
+      font-family:verdana; 
+      text-align:center; 
+      color:white;
+      text-shadow: 3px 3px grey;
         }
+
     h5 {
-        font-family:verdana; 
-        text-align:left; 
-        color:white;
+      font-family:verdana; 
+      text-align:left; 
+      color:white;
         }
+
     a:link{
-        color:blue;
+      color:blue;
     }
+
     a:visited{
-        color:red;
+      color:red;
     }
+    
     a:hover{
-        color:black;
+      color:black;
     }
 
 </style>
@@ -36,7 +41,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="getData()">
       <img src="imgDir/myPic2.jpeg" alt="A picture of Yemi" style="width:187.5px;height:333.5px;">
     <div id="content">
       <h1>Yemi's Portfolio</h1>
@@ -68,9 +73,19 @@
       </ul>
       <h5>Fun Images in My Gallery</h5>
       <p>Click<a href="Gallery.html"> here</a> to take a look at my gallery.</p>
-      <p>Click here to see some of my best quotes:</p>
-      <button onclick="getQuotesUsingAsyncAwait()">let's do this</button>
-      <div id="quote-container"></div>
+      
+      <form action="/data" method="POST">
+        <label for="bquote">What is your Best Quote?</label><br>
+        <input type="text" id="bquote" name="bquote"><br>
+        <label for="comment">Comment</label><br>
+        <input type="text" id="comment" name="comment"><br>
+        <input type="submit" value="Submit">
+      </form>
+
+      
+      <p id="quote-container"></p>
     </div>
+
+    
   </body>
 </html>
