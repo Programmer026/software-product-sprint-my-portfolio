@@ -43,17 +43,17 @@ public final class DataServlet extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       PreparedQuery results = datastore.prepare(query);
 
-        HashMap<String, String> name_comment = new HashMap<>();
-        for (Entity entity : results.asIterable()) {
-            String name = (String) entity.getProperty("Name");
-            String comment = (String) entity.getProperty("Comment");
-            name_comment.put(name, comment); 
-        }
+      HashMap<String, String> name_comment = new HashMap<>();
+      for (Entity entity : results.asIterable()) {
+        String name = (String) entity.getProperty("Name");
+        String comment = (String) entity.getProperty("Comment");
+        name_comment.put(name, comment); 
+      }
 
-        Gson gson = new Gson();
+      Gson gson = new Gson();
 
-    response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(name_comment));
+      response.setContentType("application/json;");
+      response.getWriter().println(gson.toJson(name_comment));
   }
 
   @Override
