@@ -38,22 +38,23 @@ public final class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Query query = new Query("Task");
+      Query query = new Query("Comment");
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       PreparedQuery results = datastore.prepare(query);
 
-      HashMap<String, String> name_comment = new HashMap<>();
+      String[] commentByName = new String[2];
       for (Entity entity : results.asIterable()) {
         String name = (String) entity.getProperty("Name");
         String comment = (String) entity.getProperty("Comment");
-        name_comment.put(name, comment); 
+        commentByName[0] = name;
+        commentByName[1] = comment;
       }
 
       Gson gson = new Gson();
 
       response.setContentType("application/json;");
-      response.getWriter().println(gson.toJson(name_comment));
+      response.getWriter().println(gson.toJson(commentByName));
   }
 
   @Override
