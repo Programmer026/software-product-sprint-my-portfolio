@@ -61,12 +61,12 @@ public final class DataServlet extends HttpServlet {
       String name = request.getParameter("pname");
       String comment = request.getParameter("comment");
     
-      Entity taskEntity = new Entity("Task");
-      taskEntity.setProperty("Name", name);
-      taskEntity.setProperty("Comment", comment);
+      Entity commentEntity = new Entity("Comment");
+      commentEntity.setProperty("Name", name);
+      commentEntity.setProperty("Comment", comment);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(taskEntity);
+      datastore.put(commentEntity);
 
       response.sendRedirect("/index.html");
   }
