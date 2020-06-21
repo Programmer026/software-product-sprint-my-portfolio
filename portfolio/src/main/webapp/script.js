@@ -26,6 +26,26 @@ function getData() {
   });
 }
 
+function requestTranslation() {
+        const text = document.getElementById('comment').value;
+        const languageCode = document.getElementById('language').value;
+
+        const resultContainer = document.getElementById('result');
+        resultContainer.innerText = 'Loading...';
+
+        const params = new URLSearchParams();
+        params.append('comment', comment);
+        params.append('languageCode', languageCode);
+
+        fetch('/data', {
+          method: 'POST',
+          body: params
+        }).then(response => response.text())
+        .then((translatedMessage) => {
+          resultContainer.innerText = translatedMessage;
+        });
+      }
+
 
 
 
