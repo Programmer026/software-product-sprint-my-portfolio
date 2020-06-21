@@ -24,7 +24,3 @@ function getData() {
   document.getElementById('quote-container').innerHTML = text;
   });
 }
-
-
-
-
