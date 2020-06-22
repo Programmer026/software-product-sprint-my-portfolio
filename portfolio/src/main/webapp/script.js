@@ -17,10 +17,10 @@ function getData() {
   fetch('/data').then(response => response.json()).then((quote) => {
   text = "<ul>";
   for (i = 0; i < quote.length; i=i+2){
-      if(quote[i] === "") {continue;}
-      text += quote[i] + " -:<br>" + quote[i+1] + "<br>" ;
+      text += String.format("%s:- %s", quote[i], quote[i+1]);
+      document.getElementById('quote-container').innerHTML = text;
   }
   text += "</ul>";
-  document.getElementById('quote-container').innerHTML = text;
+  
   });
 }
