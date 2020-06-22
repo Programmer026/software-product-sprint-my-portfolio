@@ -14,13 +14,9 @@
 
 
 function getData() {
-  fetch('/data').then(response => response.json()).then((quote) => {
-  text = "<ul>";
-  for (i = 0; i < quote.length; i=i+2){
-      text += String.format("%s:- %s", quote[i], quote[i+1]);
+  fetch('/data').then(response => response.json()).then((comment) => {
+      const text = `<li> ${comment[0]} :-  ${comment[1]} </li>`;
       document.getElementById('quote-container').innerHTML = text;
-  }
-  text += "</ul>";
-  
   });
 }
+
