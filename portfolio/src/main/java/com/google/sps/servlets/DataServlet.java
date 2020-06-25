@@ -60,7 +60,6 @@ public final class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String originalText = request.getParameter("comment");
       String languageCode = request.getParameter("languageCode");
-      System.out.println(languageCode);
 
       String name = request.getParameter("pname");
       String comment = request.getParameter("comment");
