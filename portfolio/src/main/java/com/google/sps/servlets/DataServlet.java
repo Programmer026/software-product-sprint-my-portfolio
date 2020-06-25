@@ -60,40 +60,21 @@ public final class DataServlet extends HttpServlet {
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(name_comment));
   }
-/*
+
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String originalText = request.getParameter("comment");
-      String languageCode = request.getParameter("languageCode");
-      System.out.println(languageCode);
-
-      String name = request.getParameter("pname");
-      String comment = request.getParameter("comment");
-    
-      Entity taskEntity = new Entity("Task");
-      taskEntity.setProperty("Name", name);
-      taskEntity.setProperty("Comment", comment);
-
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(taskEntity);
-
-      response.sendRedirect("/index.html");
-  }*/
-
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the request parameters.
     String originalText = request.getParameter("comment");
     String languageCode = request.getParameter("languageCode");
-
 
     // Do the translation.
     Translate translate = TranslateOptions.getDefaultInstance().getService();
     Translation translation =
         translate.translate(originalText, Translate.TranslateOption.targetLanguage(languageCode));
     String translatedText = translation.getTranslatedText();
-    String name = request.getParameter("pname");
 
-    //Create Entity
+    // Create Entity
+    String name = request.getParameter("name");
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("Name", name);
     commentEntity.setProperty("Comment", translatedText);
