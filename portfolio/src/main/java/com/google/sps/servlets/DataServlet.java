@@ -39,7 +39,6 @@ public final class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
       Query query = new Query("Comment");
-
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       PreparedQuery results = datastore.prepare(query);
 
@@ -59,7 +58,7 @@ public final class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String name = request.getParameter("pname");
+      String name = request.getParameter("name");
       String comment = request.getParameter("comment");
     
       Entity commentEntity = new Entity("Comment");
