@@ -35,7 +35,7 @@ function createCommentElement(comment) {
   commentElement.className = 'comment';
 
   const nameElement = document.createElement('span');
-  nameElement.innerText = task.comment;
+  nameElement.innerText = comment["comment"];
 
   const deleteButtonElement = document.createElement('button');
   deleteButtonElement.innerText = 'Delete';
