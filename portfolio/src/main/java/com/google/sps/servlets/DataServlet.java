@@ -29,6 +29,11 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
+
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -58,20 +63,29 @@ public final class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String originalText = request.getParameter("comment");
-      String languageCode = request.getParameter("languageCode");
+    // Get the request parameters.
+    String originalText = request.getParameter("comment");
+    String languageCode = request.getParameter("languageCode");
 
-      String name = request.getParameter("pname");
-      String comment = request.getParameter("comment");
-    
-      Entity taskEntity = new Entity("Task");
-      taskEntity.setProperty("Name", name);
-      taskEntity.setProperty("Comment", comment);
+    // Do the translation.
+    Translate translate = TranslateOptions.getDefaultInstance().getService();
+    Translation translation =
+        translate.translate(originalText, Translate.TranslateOption.targetLanguage(languageCode));
+    String translatedText = translation.getTranslatedText();
 
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(taskEntity);
+    // Create Entity
+    String name = request.getParameter("name");
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("Name", name);
+    commentEntity.setProperty("Comment", translatedText);
 
-      response.sendRedirect("/index.html");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    // Output the translation.
+    response.setContentType("text/html; charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
+    response.getWriter().println(translatedText);
   }
 
 

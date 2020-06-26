@@ -27,7 +27,7 @@ function getData() {
 }
 
 function requestTranslation() {
-        const text = document.getElementById('comment').value;
+        const comment = document.getElementById('comment').value;
         const languageCode = document.getElementById('language').value;
 
         const resultContainer = document.getElementById('result');
