@@ -63,6 +63,7 @@ public final class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     // Get the request parameters.
     String originalText = request.getParameter("comment");
     String languageCode = request.getParameter("languageCode");
