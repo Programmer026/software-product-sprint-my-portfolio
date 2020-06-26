@@ -34,42 +34,18 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
 
-    private ArrayList<String> quotes = new ArrayList<>();
-
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Query query = new Query("Comment");
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      PreparedQuery results = datastore.prepare(query);
-
-      String[] commentByName = new String[2];
-      for (Entity entity : results.asIterable()) {
-        String name = (String) entity.getProperty("Name");
-        String comment = (String) entity.getProperty("Comment");
-        commentByName[0] = name;
-        commentByName[1] = comment;
-      }
-
-      Gson gson = new Gson();
-
-      response.setContentType("application/json;");
-      response.getWriter().println(gson.toJson(commentByName));
-  }
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String name = request.getParameter("name");
       String comment = request.getParameter("comment");
+      long timestamp = System.currentTimeMillis();
     
       Entity commentEntity = new Entity("Comment");
-      commentEntity.setProperty("Name", name);
-      commentEntity.setProperty("Comment", comment);
+      commentEntity.setProperty("comment", comment);
+      commentEntity.setProperty("timestamp", timestamp);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
 
       response.sendRedirect("/index.html");
   }
-
-
 }

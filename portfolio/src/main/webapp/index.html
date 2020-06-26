@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getData()">
+  <body onload="loadData()">
       <img src="imgDir/myPic2.jpeg" alt="A picture of Yemi" style="width:187.5px;height:333.5px;">
     <div id="content">
       <h1>Yemi's Portfolio</h1>
@@ -79,11 +79,12 @@
         <input type="text" id="pname" name="pname"><br>
         <label for="comment">Comment</label><br>
         <input type="text" id="comment" name="comment"><br>
-        <input type="submit" value="Submit">
+        <button>Submit</button>
       </form>
 
-      
-      <ul id="quote-container"></ul>
+      <hr/>
+
+      <ul id="data-list"></ul>
     </div>
 
     
