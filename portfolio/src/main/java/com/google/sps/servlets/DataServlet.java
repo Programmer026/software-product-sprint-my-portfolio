@@ -15,55 +15,64 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
 
-    private ArrayList<String> quotes;
+    private ArrayList<String> quotes = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJson(quotes); 
+      Query query = new Query("Task");
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      PreparedQuery results = datastore.prepare(query);
+
+        HashMap<String, String> name_comment = new HashMap<>();
+        for (Entity entity : results.asIterable()) {
+            String name = (String) entity.getProperty("Name");
+            String comment = (String) entity.getProperty("Comment");
+            name_comment.put(name, comment); 
+        }
+
+        Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(gson.toJson(name_comment));
   }
 
-    @Override
-  public void init(){
-    quotes = new ArrayList<>();
-    quotes.add("I have not failed. "
-        + "I've just found 10,000 ways that doesn't work. - Thomas A. Edison");
-    quotes.add("Success is not final, Failure is not fatal: " 
-        + "it is the courage to continue that counts. - Winston S. Churchill");
-    quotes.add("There is only one thing that makes a dream impossible to acheive: "
-        + "The fear of failure. - Paulo Coelho");
-    quotes.add("Failure is the condiment that gives success its flavor. - Truman Capote");
-    quotes.add("Have no fear of perfection - you'll never reach it. - Salvador Dali");
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String originalText = request.getParameter("comment");
+      String languageCode = request.getParameter("languageCode");
+
+      String name = request.getParameter("pname");
+      String comment = request.getParameter("comment");
+    
+      Entity taskEntity = new Entity("Task");
+      taskEntity.setProperty("Name", name);
+      taskEntity.setProperty("Comment", comment);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(taskEntity);
+
+      response.sendRedirect("/index.html");
   }
 
-  private String convertToJson(ArrayList<String> quotes) {
-    String json = "{";
-    json += "\"Quote1\": ";
-    json += "\"" + quotes.get(0) + "\"";
-    json += ", ";
-    json += "\"Quote2\": ";
-    json += "\"" + quotes.get(1) + "\"";
-    json += ", ";
-    json += "\"Quote3\": ";
-    json += "\"" + quotes.get(2) + "\"";
-    json += ", ";
-    json += "\"Quote4\": ";
-    json += "\"" + quotes.get(3) + "\"";
-    json += "}";
-    return json;
-  }
 
 }
