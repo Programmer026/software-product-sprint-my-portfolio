@@ -38,5 +38,13 @@ public final class FindMeetingQuery {
         TimeRange.fromStartEnd(time.end(), TimeRange.END_OF_DAY, true) );
     }
     return times;
+
+    TimeRange[] arr = new TimeRange[10];
+    int idx = 0;
+    for (Event event : events){
+        TimeRange time = event.getWhen();
+        arr[idx] = time;
+    }
   }
 }
+
