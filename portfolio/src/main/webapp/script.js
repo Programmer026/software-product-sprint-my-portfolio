@@ -12,14 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-function getData() {
-  fetch('/data').then(response => response.json()).then((comment) => {
-      const text = `<li> ${comment[0]} :-  ${comment[1]} </li>`;
-      document.getElementById('quote-container').innerHTML = text;
-  });
-}
-
 function loadData() {
   fetch('/list-data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('data-list');
@@ -51,9 +43,30 @@ function createCommentElement(comment) {
   return commentElement;
 }
 
+
 /** Tells the server to delete the task. */
 function deleteComment(comment) {
   const params = new URLSearchParams();
   params.append('id', comment.id);
   fetch('/delete-data', {method: 'POST', body: params});
 }
+
+function requestTranslation() {
+        const comment = document.getElementById('comment').value;
+        const languageCode = document.getElementById('language').value;
+
+        const resultContainer = document.getElementById('result');
+        resultContainer.innerText = 'Loading...';
+
+        const params = new URLSearchParams();
+        params.append('comment', comment);
+        params.append('languageCode', languageCode);
+
+        fetch('/data', {
+          method: 'POST',
+          body: params
+        }).then(response => response.text())
+        .then((translatedMessage) => {
+          resultContainer.innerText = translatedMessage;
+        });
+      }

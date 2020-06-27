@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
+
   <body onload="loadData()">
       <img src="imgDir/myPic2.jpeg" alt="A picture of Yemi" style="width:187.5px;height:333.5px;">
     <div id="content">
@@ -85,6 +86,18 @@
       <hr/>
 
       <ul id="data-list"></ul>
+
+      <select id="language">
+        <option value="en">English</option>
+        <option value="zh">Chinese</option>
+        <option value="es">Spanish</option>
+        <option value="hi">Hindi</option>
+        <option value="ar">Arabic</option>
+      </select>
+      <button onclick="requestTranslation();">Translate</button>
+    
+      <div id="result"></div>
+
     </div>
 
     
