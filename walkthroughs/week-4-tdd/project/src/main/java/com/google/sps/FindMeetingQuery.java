@@ -39,12 +39,12 @@ public final class FindMeetingQuery {
     }
     return times;
 
-    TimeRange[] arr = new TimeRange[10];
-    int idx = 0;
+    ArrayList<TimeRange> arrList = new ArrayList<>();
     for (Event event : events){
         TimeRange time = event.getWhen();
-        arr[idx] = time;
+        arrList.add(time);
     }
+    Collections.sort(arrList, TimeRange.ORDER_BY_START);
   }
 }
 
