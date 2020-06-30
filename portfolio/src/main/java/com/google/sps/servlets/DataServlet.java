@@ -33,38 +33,15 @@ import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 
-
-
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
-
-    private ArrayList<String> quotes = new ArrayList<>();
-
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Query query = new Query("Task");
-
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      PreparedQuery results = datastore.prepare(query);
-
-        HashMap<String, String> name_comment = new HashMap<>();
-        for (Entity entity : results.asIterable()) {
-            String name = (String) entity.getProperty("Name");
-            String comment = (String) entity.getProperty("Comment");
-            name_comment.put(name, comment); 
-        }
-
-        Gson gson = new Gson();
-
-    response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(name_comment));
-  }
-
+  
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the request parameters.
     String originalText = request.getParameter("comment");
+    long timestamp = System.currentTimeMillis();
     String languageCode = request.getParameter("languageCode");
 
     // Do the translation.
@@ -74,10 +51,9 @@ public final class DataServlet extends HttpServlet {
     String translatedText = translation.getTranslatedText();
 
     // Create Entity
-    String name = request.getParameter("name");
     Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("Name", name);
     commentEntity.setProperty("Comment", translatedText);
+    commentEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
@@ -87,6 +63,7 @@ public final class DataServlet extends HttpServlet {
     response.setCharacterEncoding("UTF-8");
     response.getWriter().println(translatedText);
   }
+
 
 
 }
